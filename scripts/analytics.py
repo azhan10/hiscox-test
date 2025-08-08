@@ -47,6 +47,10 @@ class Analytics:
     
     """
     def display_pairwise_relationships(self, column) -> bool:
+
+        if len(self.data) == 0:
+            print("Data is empty")
+            return False
         
         try:
             sns.pairplot(self.data, hue=column)
@@ -68,9 +72,17 @@ class Analytics:
         - exclude_columns -> the column to not include in the correlation
     
     Returns the correlation scores between columns in dataframe
+
+    Other error handling includes:
+        - checking if column given exist in the dataset
     
     """
     def get_correlation(self, exclude_columns) -> pd.DataFrame:
+
+        if len(self.data) == 0:
+            print("Data is empty")
+            return []
+
         return self.data.drop(exclude_columns, axis=1, errors='ignore').corr()
     
     
@@ -86,6 +98,11 @@ class Analytics:
     
     """
     def display_heatmap(self, correlation) -> bool:
+
+        if len(correlation) == 0:
+            print("The correlation is empty")
+            return False
+
         try:
             upper_triangular = np.triu(np.ones_like(correlation, dtype=bool))
             
@@ -93,13 +110,13 @@ class Analytics:
             
             sns.heatmap(
                 correlation,
-                mask=upper_triangular,
-                cmap=colour_map,
-                vmax=0.3,
-                center=0,
-                square=True,
-                linewidths=0.5,
-                cbar_kws={"shrink": 0.5},
+                mask= upper_triangular,
+                cmap= colour_map,
+                vmax= 0.3,
+                center= 0,
+                square= True,
+                linewidths= 0.5,
+                cbar_kws= {"shrink": 0.5},
             )
             plt.title(f"Heatmap correlation")
             plt.savefig(self.data_path() + f"heatmap correlation.pdf")
@@ -119,9 +136,16 @@ class Analytics:
         - columns -> the list of columns to display plots
     
     Returns true if the plots are produced successfully. Otherwise, returns false
+
+    Other error handling includes:
+        - checking if column given exist in the dataset
     
     """
     def display_boxplots_and_histogram(self, columns) -> bool:
+
+        if len(columns) == 0:
+            print("The column list given is empty")
+            return False
         
         try:
             for column in columns:
@@ -141,6 +165,9 @@ class Analytics:
     """
     
     Returns the data file path
+
+    Other error handling includes:
+        - checking if path exists
     
     """
     def data_path(self) -> str:

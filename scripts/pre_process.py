@@ -35,6 +35,11 @@ class PreProcessData:
         - Since the database is fixed, it make sense to add data configuration. Assuming it varies then it can be a function and pass in the columns
         - I guess an improvement can be adding them as a hyperparameter
         - I'm assume these variables were chosen for a reason? If so, I may need to do more research.
+        - The query is added even though I don't understand the purpose (maybe to give it a label?)
+
+    Other error handling includes:
+        - checking if features is above 1
+        - check rows are above 0
     
     
     """
@@ -67,32 +72,32 @@ class PreProcessData:
         
         self.min_max_scaler_transform_columns = {
             "age":{
-            	"feature_range_min":18,
-            	"feature_range_max":95
+            	"feature_range_min": 18,
+            	"feature_range_max": 95
             },
             "height_cm":{
-            	"feature_range_min":140,
-            	"feature_range_max":210
+            	"feature_range_min": 140,
+            	"feature_range_max": 210
             },
             "weight_kg":{
-            	"feature_range_min":45,
-            	"feature_range_max":125
+            	"feature_range_min": 45,
+            	"feature_range_max": 125
             },
             "income":{
-            	"feature_range_min":0,
-            	"feature_range_max":250_000
+            	"feature_range_min": 0,
+            	"feature_range_max": 250_000
             },
             "credit_score_1":{
-            	"feature_range_min":0,
-            	"feature_range_max":999
+            	"feature_range_min": 0,
+            	"feature_range_max": 999
             },
             "credit_score_2":{
-            	"feature_range_min":0,
-            	"feature_range_max":700
+            	"feature_range_min": 0,
+            	"feature_range_max": 700
             },
             "credit_score_3":{
-            	"feature_range_min":0,
-            	"feature_range_max":710
+            	"feature_range_min": 0,
+            	"feature_range_max": 710
             }
         }
         
@@ -119,7 +124,7 @@ class PreProcessData:
             "n_dependents",
         ]
         
-        
+        # I added this in, maybe there's a reason I'm unaware (suitable for terminal running)
         print(self.query)
         
         df = self.create_classification_data()
@@ -163,6 +168,14 @@ class PreProcessData:
     
     """
     def create_classification_data(self) -> pd.DataFrame:
+
+        if self.rows <= 0:
+            print("Rows must be above zero")
+            return []
+
+        if self.features <= 0:
+            print("Features must be above zero")
+            return []
         
         features, labels = make_classification(
             n_samples= self.rows,
@@ -172,7 +185,7 @@ class PreProcessData:
             n_repeated= 3,
             n_classes= 2,
             class_sep= 1.2,
-            flip_y= 0.035,  # Randomly invert y for added noise
+            flip_y= 0.035,
             weights= [0.85, 0.15],
             random_state= 1889,
         )
@@ -199,6 +212,10 @@ class PreProcessData:
     
     """
     def create_min_max_scale_data(self, df) -> pd.DataFrame:
+
+        if len(df) == 0:
+            print("The data is empty")
+            return []
         
         for key, value in self.min_max_scaler_transform_columns.items():
             
@@ -367,6 +384,11 @@ class PreProcessData:
     
     """
     def count_rows(self, column) -> pd.DataFrame:
+
+        if column in self.data.columns:
+            print("The column does not exist")
+            return []
+
         return self.data[column].value_counts()
     
     

@@ -44,7 +44,6 @@ class Model:
     
     Hyperparameters:
         - data -> the data in dataframe object
-        - features -> gather all dataframe that are not target
         - target -> gather the target dataframe vector
     
     
@@ -61,9 +60,28 @@ class Model:
         self.y_test = []
         
         
-    """"""
+    """
+    
+    Set a new model to the global variable
+
+    """
     def set_model(self, model):
-        self.model = model
+        try:
+            self.model = model
+        except Exception as error:
+            print("There was an error ", error)
+            return False
+
+        return True
+
+
+    """
+    
+    Return the current global model
+
+    """
+    def get_model(self):
+        return self.model
     
     
     """
@@ -95,6 +113,13 @@ class Model:
         - The train test split defaintely impact the outcome as it is shuffled by default
         - Since there are several attempts of model, I added it as a hyperparameter
         - The only downside, it's not flexible so there would need to be code edits
+        - I'm assuming the random state is 1889 for a reason unaware, I would do a run with another number to see accuracy changes
+
+
+    Returns true if successful, otherwise there's an error
+
+    Other error handling includes:
+        - checking model is XGBoost
     
     """
     def train_model(self, model) -> bool:
