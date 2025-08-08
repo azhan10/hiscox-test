@@ -53,7 +53,8 @@ class Analytics:
             plt.title(f"Pair plot for {column}")
             plt.savefig(self.data_path() + f"pair plot for {column}.pdf")
             plt.show()
-        except:
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         return True
@@ -103,7 +104,8 @@ class Analytics:
             plt.title(f"Heatmap correlation")
             plt.savefig(self.data_path() + f"heatmap correlation.pdf")
             plt.show()
-        except:
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         return True
@@ -129,7 +131,8 @@ class Analytics:
                 plt.suptitle(f"Boxplot and Histogram for {column}")
                 plt.savefig(self.data_path() + f"boxplot and histogram for {column}.pdf")
                 plt.show()
-        except:
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         return True 

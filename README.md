@@ -8,4 +8,3 @@ There is also a demo video.
 
 The instructions are added in the docs folder.
 
-

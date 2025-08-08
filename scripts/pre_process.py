@@ -301,12 +301,14 @@ class PreProcessData:
         
         try:
             os.mkdir(data_path)
-        except:
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         try:
             self.data.to_csv((data_path + filename + ".csv"), index=False)
-        except:
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         return True

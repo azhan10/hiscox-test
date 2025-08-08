@@ -110,7 +110,8 @@ class Model:
             self.y_test = y_test
             
             self.model = model
-        except:
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         return True
@@ -226,7 +227,8 @@ class Model:
             plt.title("Receiver Operating Curve")
             plt.savefig(self.data_path() + f"{name} roc curves.pdf")
             plt.show()
-        except:
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         
@@ -261,7 +263,8 @@ class Model:
             xgboost.plot_tree(self.model, rankdir="LR", ax=ax_tree)
             plt.savefig(self.data_path() + f"{name} model tree.pdf")
             plt.show()            
-        except:
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         
@@ -356,8 +359,8 @@ class Model:
             
             plt.savefig(self.data_path() + f"{name} summary.pdf")
             plt.show()
-        except:
-            print("Summary error")
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         return True
@@ -387,7 +390,8 @@ class Model:
     def save_model(self, name):
         try:
             self.model.save_model(self.data_path() + f"{name}.json")
-        except:
+        except Exception as error:
+            print("There was an error ", error)
             return False
         
         return True
